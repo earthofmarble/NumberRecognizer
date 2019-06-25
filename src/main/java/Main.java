@@ -20,7 +20,7 @@ public class Main {
         int inputNodes = 784;   //количество входных нейронов
         int hiddenNodes = 200;  //количество скрытых нейронов
         int outputNodes = 10;   //количество выходных нейронов
-        int epochs = 2;         //количество эпох
+        int epochs = 2;         //количество эпох стоит увеличить до 5, правда, обучаться она будет дольше
         double learningRate = 0.1;  //скорость обучения
         //инициализируем сеть
         NeuralNetwork network = new NeuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate);
@@ -77,6 +77,42 @@ public class Main {
                 System.err.println("Укажите путь к изображению (28x28 pix): ");
                 Scanner scanner = new Scanner(System.in);
                 String path = scanner.nextLine();
+                if (path.equals("backquery") || path.equals("back query") || path.equals("backQuery") || path.equals("Backquery") || path.equals("Back Query")){
+                    System.out.println("Введите цифру 0-9: ");
+                    int label=19;
+                    while (label>9 || label<0) {
+                        try{
+                            label = Integer.parseInt(scanner.nextLine());
+                        }catch(NumberFormatException e){
+                            System.out.println("Некорректное значение. Couldnt parse");
+                        }
+                        if (label>9 || label<0){
+                            System.out.println("Некорректное значение, цифра должна быть в диапазоне от нуля до девяти");
+                        }
+                    }
+                    double[] targets = new double[outputNodes];
+
+                    for (int i=0; i<targets.length; i++){
+                        targets[i] = 0.01;
+                    }
+
+                    targets[label]=0.99;
+
+                    System.out.println("Targets: ");
+                    for (double i : targets){
+                        System.out.print(i + " ");
+                    }
+
+                    double[][] imageData = network.backQuery(targets);
+                    System.out.println();
+                    System.out.println("Пиксели цифры " + label + ": ");
+                    for (int i=0; i<imageData.length; i++){
+                        for (int j=0; j<imageData[i].length; j++){
+                            System.out.print(imageData[i][j] + ", ");
+                        }
+                    }
+                    System.out.println();
+                } else
                 getOwnAnswer(network, path);  //запускаем обработку изображения и вычисление значения
             } catch (IOException e) {
                 e.printStackTrace();
@@ -190,7 +226,6 @@ public class Main {
         csvReader.close();
         return list;
     }
-
 
 
 }
