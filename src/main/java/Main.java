@@ -14,13 +14,13 @@ public class Main {
     private static ArrayList<String> testDataList;
 
         /** ЭТО ВАЖНО! ТУТ УКАЗЫВАЮТСЯ ПУТИ К ТЕСТАМ И ТРЕНИНГАМ **/
-    private static final String TESTPATH = "./mnist_test.csv";  //ТЕСТЫ  mnist_test_10 - маленький тест, mnist_test - большой
-    private static final String TRAINPATH = "./mnist_train.csv"; //ТРЕНИРОВОЧНЫЕ ДАННЫЕ mnist_train_100 - короткий тренинг mnist_train - полный
-    public static void main(String[] args){
+        private static final String TESTPATH = "./mnist_test.csv";  //ТЕСТЫ  mnist_test_10 - маленький тест, mnist_test - большой
+        private static final String TRAINPATH = "./mnist_train.csv"; //ТРЕНИРОВОЧНЫЕ ДАННЫЕ mnist_train_100 - короткий тренинг mnist_train - полный
+        public static void main(String[] args){
         int inputNodes = 784;   //количество входных нейронов
         int hiddenNodes = 200;  //количество скрытых нейронов
         int outputNodes = 10;   //количество выходных нейронов
-        int epochs = 2;         //количество эпох стоит увеличить до 5, правда, обучаться она будет дольше
+        int epochs = 2;         //количество эпох
         double learningRate = 0.1;  //скорость обучения
         //инициализируем сеть
         NeuralNetwork network = new NeuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate);
@@ -226,6 +226,11 @@ public class Main {
         csvReader.close();
         return list;
     }
+
+
+
+
+
 
 
 }
