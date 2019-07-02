@@ -1,10 +1,8 @@
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -33,6 +31,8 @@ public class Main {
             System.out.println(e);
             System.err.println("Проверьте путь!");
         }
+            //вращаем и добавляем дополнительные данные для обучения
+        rotateAndAddData();
 
         for (int i=0; i<epochs; i++){
             for (String record: trainingDataList) {
@@ -229,8 +229,115 @@ public class Main {
 
 
 
+    private static void rotateAndAddData (){
+            ArrayList<String> toAddPlus = new ArrayList<>();   //для того, чтобы данные были более разрежены, не было такого, что все цифры повторяются 2 раза
+            ArrayList<String> toAddMinus = new ArrayList<>();
+            for (String record: trainingDataList) {
+
+                List<String> allTrainingValues = Arrays.asList(record.split("\\s*,\\s*"));
+
+                ArrayList<Position> plusPositions = new ArrayList<>();
+                ArrayList<Position> minusPositions = new ArrayList<>();
+
+                int[][] dataReshaped = new int[28][28];
+                int[][] dataFlippedPlus = new int[28][28];
+                int[][] dataFlippedMinus = new int[28][28];
+                for (int i=0; i<dataFlippedPlus.length; i++){
+                    for (int j=0; j<dataFlippedPlus[i].length; j++){
+                        dataFlippedPlus[i][j]= 0;
+                        dataFlippedMinus[i][j]= 0;
+                    }
+                }
+
+                int c=1;
+                for (int i=0; i<28; i++){
+                    for (int j=0; j<28; j++, c++){
+                        dataReshaped[i][j] = Integer.parseInt(allTrainingValues.get(c));
+                    }
+                }
+
+                Position tempPosition;
+
+                for (int i=0; i<dataReshaped.length; i++){              //TODO сделать нормально, типа сразу проверку и изменение позиций, подумать над этим
+                    for (int j=0; j<dataReshaped[i].length; j++){
+
+                        tempPosition = rotatePixel(new Position(i, j), true);
+                        if (tempPosition.getI()>27 || tempPosition.getI()<0 || tempPosition.getJ()>27 || tempPosition.getJ()<0){
+                            continue;
+                        } else {
+                            if (dataFlippedPlus[tempPosition.getI()][tempPosition.getJ()]!=0){
+                                System.out.println("!= 0 !!!!!!!!!!!!! PLUS");
+                            }
+                            dataFlippedPlus[tempPosition.getI()][tempPosition.getJ()] = dataReshaped[i][j];
+                        }
 
 
+                        tempPosition = rotatePixel(new Position(i, j), false);
+                        if (tempPosition.getI()>27 || tempPosition.getI()<0 || tempPosition.getJ()>27 || tempPosition.getJ()<0){
+                            continue;
+                        } else {
+                            if (dataFlippedMinus[tempPosition.getI()][tempPosition.getJ()]!=0){
+                                System.out.println("!= 0 !!!!!!!!!!!!! MINUS");
+                            }
+                            dataFlippedMinus[tempPosition.getI()][tempPosition.getJ()] = dataReshaped[i][j];
+                        }
 
+                    }
+                }
+
+                arrayElementsToStringList(dataFlippedPlus, toAddPlus, allTrainingValues.get(0));
+                arrayElementsToStringList(dataFlippedMinus, toAddMinus, allTrainingValues.get(0));
+            }
+
+                //TODO еще раз проверить, все ли правильно добавляет
+        trainingDataList.addAll(toAddPlus);
+        trainingDataList.addAll(toAddMinus);
+
+    }
+
+
+    private static Position rotatePixel(Position defPosition, boolean plus){
+        double tempI;
+        double tempJ;
+
+        Position tempPosition = new Position(defPosition.getI(), defPosition.getJ());
+
+        tempPosition.setI(tempPosition.getI()-13);
+        tempPosition.setJ(tempPosition.getJ()-13);
+
+        if (plus) {
+            ///+10градусов
+            tempI = (tempPosition.getI() * 0.984) + (tempPosition.getJ() * 0.173);
+            tempJ = -1 * (tempPosition.getI() * 0.173) + (tempPosition.getJ() * 0.984);
+        } else {
+            ///-10градусов
+            tempI = (tempPosition.getI() * 0.984) - (tempPosition.getJ() * 0.173);
+            tempJ = (tempPosition.getI() * 0.173) + (tempPosition.getJ() * 0.984);
+        }
+        ///13-13 - точка центра
+        tempI+=13;
+        tempJ+=13;
+        ///округляем
+        int iPlus = (int) Math.round(tempI);
+        int jPlus = (int) Math.round(tempJ);
+
+        return new Position(iPlus, jPlus);
+    }
+
+    private static void arrayElementsToStringList(int[][] twoDimArray, ArrayList<String> list, String target) {
+
+        ArrayList<String> temp = new ArrayList<>();
+        temp.add(target);
+        for (int i=0; i<twoDimArray.length; i++){
+            for (int j=0; j<twoDimArray[i].length; j++){
+                temp.add(String.valueOf(twoDimArray[i][j]));
+            }
+        }
+        String resultPlus = temp.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+
+        list.add(resultPlus);
+    }
 
 }
