@@ -24,7 +24,7 @@
 
 ОБНОВЛЕНИЕ. 
 Сделал вращение тренинговых картинок на +/-10 градусов. Это должно увеличить точность. В тесте (из файла с тестами mnist_test.csv) точность не изменилась, но, судя по тому, какие цифры рисует сеть, это повлияло в лучшую сторону. Для теста, скорее всего, выбраны определенные цифры, поэтому результат не заметен.
-Я почитал, этот датасет не очень качественный. Там больше половины данных это трудноразличимые цифры, так что сеть учится понимать то, что трудно понять человеку, а то, что человеку легко - учит хуже. По крайней мере так пишут в интернете, сам я не проверял. А может быть я неправильно рисовал свои картинки, на сайте [MNIST Database](http://yann.lecun.com/exdb/mnist/) написано:
+Я почитал, этот датасет не очень качественный. Там больше половины данных это трудноразличимые цифры, так что сеть учится понимать то, что трудно понять человеку, а то, что человеку легко - учит хуже. По крайней мере так пишут в интернете, сам я не проверял. А может быть, я неправильно рисовал свои картинки, на сайте [MNIST Database](http://yann.lecun.com/exdb/mnist/) написано:
 >The original black and white (bilevel) images from NIST were size normalized to fit in a 20x20 pixel box while preserving their aspect ratio.
 >The resulting images contain grey levels as a result of the anti-aliasing technique used by the normalization algorithm.
 >The images were centered in a 28x28 image by computing the center of mass of the pixels, and translating the image so as to position this point at the center of the 28x28 field.
