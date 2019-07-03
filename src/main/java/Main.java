@@ -23,38 +23,46 @@ public class Main {
         //инициализируем сеть
         NeuralNetwork network = new NeuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate);
 
-        System.err.println("ОБУЧЕНИЕ НАЧАЛОСЬ...");
-        try {
-            trainingDataList =readCSVfile(TRAINPATH);
-        } catch (IOException e) {
-            System.err.println("Файл с данными для обучения не существует! ");
-            System.out.println(e);
-            System.err.println("Проверьте путь!");
-        }
-            //вращаем и добавляем дополнительные данные для обучения
-        rotateAndAddData();
+        boolean isTrained = network.loadWeights();
 
-        for (int i=0; i<epochs; i++){
-            for (String record: trainingDataList) {
-                //парсим нашу строку из тренинга
-                List<String> allTrainingDataValues = Arrays.asList(record.split("\\s*,\\s*"));
-                //значения хранятся в диапазоне от 0 до 255, изменяем под наш диапазон (от 0.01 до 1)
-                //первое значение в строке это ответ(ну типа то, что там нарисовано, нарисована семерка, значит первый элемент 7 и тд), поэтому игнорируем первый элемент
-                for (int j = 1; j< allTrainingDataValues.size(); j++){
-                    network.inputsList[j-1] = (Double.parseDouble(allTrainingDataValues.get(j)) / 255.0 * 0.99) + 0.01;
-                }
-                //обнуляем все цели(0=0.01, чтобы не возникло проблем при корректировке весов)
-                for (int j=0; j<outputNodes; j++){
-                    network.targetsList[j] = 0.01;
-                }
-                //высталяем в целях 0.99 как наиболее вероятный результат(у нас числа от 0 до 9, поэтому просто получаем первый элемент нашего ЦСВ, он будет и индексом элемента)
-                network.targetsList[Integer.parseInt(allTrainingDataValues.get(0))] = 0.99;
-                //запускаем обучение
-                network.train(network.inputsList, network.targetsList);
+        if (!isTrained) {
+
+            System.err.println("ОБУЧЕНИЕ НАЧАЛОСЬ...");
+            try {
+                trainingDataList = readCSVfile(TRAINPATH);
+            } catch (IOException e) {
+                System.err.println("Файл с данными для обучения не существует! ");
+                System.out.println(e);
+                System.err.println("Проверьте путь!");
             }
-        }
-        System.err.println("ОБУЧЕНИЕ ОКОНЧЕНО");
+            //вращаем и добавляем дополнительные данные для обучения
+            System.err.println("TRAINING DATA BEFORE rotations: " + trainingDataList.size());
+            rotateAndAddData();
+            System.err.println("TRAINING DATA AFTER rotations: " + trainingDataList.size());
+            for (int i = 0; i < epochs; i++) {
+                for (String record : trainingDataList) {
+                    //парсим нашу строку из тренинга
+                    List<String> allTrainingDataValues = Arrays.asList(record.split("\\s*,\\s*"));
+                    //значения хранятся в диапазоне от 0 до 255, изменяем под наш диапазон (от 0.01 до 1)
+                    //первое значение в строке это ответ(ну типа то, что там нарисовано, нарисована семерка, значит первый элемент 7 и тд), поэтому игнорируем первый элемент
+                    for (int j = 1; j < allTrainingDataValues.size(); j++) {
+                        network.inputsList[j - 1] = (Double.parseDouble(allTrainingDataValues.get(j)) / 255.0 * 0.99) + 0.01;
+                    }
+                    //обнуляем все цели(0=0.01, чтобы не возникло проблем при корректировке весов)
+                    for (int j = 0; j < outputNodes; j++) {
+                        network.targetsList[j] = 0.01;
+                    }
+                    //высталяем в целях 0.99 как наиболее вероятный результат(у нас числа от 0 до 9, поэтому просто получаем первый элемент нашего ЦСВ, он будет и индексом элемента)
+                    network.targetsList[Integer.parseInt(allTrainingDataValues.get(0))] = 0.99;
+                    //запускаем обучение
+                    network.train(network.inputsList, network.targetsList);
+                }
+            }
+
+            network.saveWeights();
+            System.err.println("ОБУЧЕНИЕ ОКОНЧЕНО");
 /*** */
+        }
             //открываем файл с тестами
         try {
             testDataList= readCSVfile(TESTPATH);
@@ -214,7 +222,7 @@ public class Main {
     }
 
             //читаем CSV файл, возвращает список строк
-    private static ArrayList<String> readCSVfile (String filePath) throws IOException {
+    static ArrayList<String> readCSVfile (String filePath) throws IOException {
         ArrayList<String> list = new ArrayList<String>();
         BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
 
@@ -222,13 +230,12 @@ public class Main {
         while ((strLine = csvReader.readLine()) != null){
             list.add(strLine);
         }
-
         csvReader.close();
         return list;
     }
 
 
-
+//вращаем тренинговые данные на +/-10 градусов
     private static void rotateAndAddData (){
             ArrayList<String> toAddPlus = new ArrayList<>();   //для того, чтобы данные были более разрежены, не было такого, что все цифры повторяются 2 раза
             ArrayList<String> toAddMinus = new ArrayList<>();
@@ -236,8 +243,6 @@ public class Main {
 
                 List<String> allTrainingValues = Arrays.asList(record.split("\\s*,\\s*"));
 
-                ArrayList<Position> plusPositions = new ArrayList<>();
-                ArrayList<Position> minusPositions = new ArrayList<>();
 
                 int[][] dataReshaped = new int[28][28];
                 int[][] dataFlippedPlus = new int[28][28];
@@ -265,9 +270,6 @@ public class Main {
                         if (tempPosition.getI()>27 || tempPosition.getI()<0 || tempPosition.getJ()>27 || tempPosition.getJ()<0){
                             continue;
                         } else {
-                            if (dataFlippedPlus[tempPosition.getI()][tempPosition.getJ()]!=0){
-                                System.out.println("!= 0 !!!!!!!!!!!!! PLUS");
-                            }
                             dataFlippedPlus[tempPosition.getI()][tempPosition.getJ()] = dataReshaped[i][j];
                         }
 
@@ -276,9 +278,6 @@ public class Main {
                         if (tempPosition.getI()>27 || tempPosition.getI()<0 || tempPosition.getJ()>27 || tempPosition.getJ()<0){
                             continue;
                         } else {
-                            if (dataFlippedMinus[tempPosition.getI()][tempPosition.getJ()]!=0){
-                                System.out.println("!= 0 !!!!!!!!!!!!! MINUS");
-                            }
                             dataFlippedMinus[tempPosition.getI()][tempPosition.getJ()] = dataReshaped[i][j];
                         }
 
@@ -295,7 +294,7 @@ public class Main {
 
     }
 
-
+//вращаем пиксель
     private static Position rotatePixel(Position defPosition, boolean plus){
         double tempI;
         double tempJ;
@@ -323,7 +322,7 @@ public class Main {
 
         return new Position(iPlus, jPlus);
     }
-
+//конвертируем двумерный массив в строку
     private static void arrayElementsToStringList(int[][] twoDimArray, ArrayList<String> list, String target) {
 
         ArrayList<String> temp = new ArrayList<>();

@@ -1,8 +1,13 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
-public class NeuralNetwork {
+class NeuralNetwork {
     int iNodes; //input
     int hNodes; //hidden
     int oNodes; //output
@@ -33,7 +38,7 @@ public class NeuralNetwork {
 //    should be in the range 1/(√3) = 0.577. If each node has 100
 //    incoming links, the weights should be in the range 1/(√100) = 0.1.
 
-    public NeuralNetwork(int inputNodes, int hiddenNodes, int outputNodes, double learningRate) {
+    NeuralNetwork(int inputNodes, int hiddenNodes, int outputNodes, double learningRate) {
         this.iNodes = inputNodes;
         this.hNodes = hiddenNodes;
         this.oNodes = outputNodes;
@@ -79,7 +84,6 @@ public class NeuralNetwork {
         wHOTransposed = updateWeights(lRate, wHOTransposed, localOutputErrors, localFinalOutputsTransposed, localHiddenOutputsTransposed);
         //обновляем веса входных - скрытых
         wIHTransposed = updateWeights(lRate, wIHTransposed, localHiddenErrors, localHiddenOutputsTransposed, localInputsListTransposed);
-
     }
 
     //вычисляем результат сети
@@ -306,18 +310,12 @@ public class NeuralNetwork {
 
     public double[][] backQuery(double[] targetsList) {
 
-
         double[][] localFinalOutputs = transpose2DimMatrix(transpose1DimMatrix(targetsList));
         double[][] localFinalInputs = inverseActivationFunction(localFinalOutputs);
-
         double[][] localHiddenOutputs = dotMatrices(transpose2DimMatrix(wHOTransposed), localFinalInputs);
-        print2DimMatrix(localHiddenOutputs);
         localHiddenOutputs = scaleBackQuery(localHiddenOutputs);
-        print2DimMatrix(localHiddenOutputs);
         double[][] localHiddenInputs = inverseActivationFunction(localHiddenOutputs);
-
         double[][] localInputs = dotMatrices(transpose2DimMatrix(wIHTransposed), localHiddenInputs);
-
         localInputs = scaleBackQuery(localInputs);
 
         return localInputs;
@@ -340,8 +338,6 @@ public class NeuralNetwork {
             }
         }
 
-        System.err.println("max: "+ max);
-        System.err.println("min: "+ min);
         max += Math.abs(min);
         for (int i=0; i<outputs.length; i++){
             for (int j=0; j<outputs[i].length; j++){
@@ -350,6 +346,119 @@ public class NeuralNetwork {
         }
         return outputs;
     }
+//сохраняем память сети на диск
+    void saveWeights(){
+        BufferedWriter writerWih = null;
+        BufferedWriter writerWho = null;
+        try {
+            File wIHFile = new File("./wIHTransposedMemory.csv");
+            File wHOFile = new File("./wHOTransposedMemory.csv");
+            if (wIHFile.exists() && wIHFile.isFile()){
+                try {
+                    wIHFile.delete();
+                    wIHFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                wIHFile.createNewFile();
+            }
+
+            if (wHOFile.exists() && wHOFile.isFile()){
+                try {
+                    wHOFile.delete();
+                    wHOFile.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                wHOFile.createNewFile();
+            }
+
+
+            writerWih = new BufferedWriter(new FileWriter(new File("./wIHTransposedMemory.csv"), true));
+            writerWho = new BufferedWriter(new FileWriter(new File("./wHOTransposedMemory.csv"), true));
+
+            for (int i =0; i<wIHTransposed.length; i++){
+                for (int j =0; j<wIHTransposed[i].length; j++){
+                    if (j!=wIHTransposed[i].length-1)
+                        writerWih.write(wIHTransposed[i][j]+ ",");
+                    else writerWih.write(String.valueOf(wIHTransposed[i][j]));
+                }
+                writerWih.write("\r");
+            }
+            writerWih.flush();
+
+
+            for (int i =0; i<wHOTransposed.length; i++){
+                for (int j =0; j<wHOTransposed[i].length; j++){
+                    if (j!=wHOTransposed[i].length-1)
+                        writerWho.write(wHOTransposed[i][j]+ ",");
+                    else writerWho.write(String.valueOf(wHOTransposed[i][j]));
+                }
+                writerWho.write("\r");
+            }
+            writerWho.flush();
+
+        } catch (IOException e) {
+            System.err.println("Не удается создать/открыть/записать (в) файл с указанным именем! " + e);
+        }
+    }
+//загружаем память с диска
+     boolean loadWeights(){
+            File wIHFile = new File("./wIHTransposedMemory.csv");
+            File wHOFile = new File("./wHOTransposedMemory.csv");
+            if (wIHFile.exists() && wIHFile.isFile() && wHOFile.exists() && wHOFile.isFile()){
+                try {
+                    ArrayList<String> wIHStrings = Main.readCSVfile(wIHFile.getPath());
+                    ArrayList<String> wHOStrings = Main.readCSVfile(wHOFile.getPath());
+                    if (wIHStrings.size()!=hNodes || wHOStrings.size()!=oNodes){
+                        System.err.println("wIHStrings.size()!=hNodes || wHOStrings.size()!=oNodes         НАЧИНАЕТСЯ ОБУЧЕНИЕ");
+                        return false;
+                    }
+
+                    for (int i=0; i<wIHStrings.size(); i++) {
+                        List<String> recordString = Arrays.asList(wIHStrings.get(i).split("\\s*,\\s*"));
+
+                        if (recordString.size()!=iNodes){
+                            System.err.println("recordString.size()!= количеству ВХОДНЫХ НЕЙРОНОВ, начинается обучение");
+                            return false;
+                        }
+
+                        for (int j=0; j<recordString.size(); j++){
+                            wIHTransposed[i][j] = Double.parseDouble(recordString.get(j));
+                        }
+                    }
+
+                    for (int i=0; i<wHOStrings.size(); i++) {
+                        List<String> recordString = Arrays.asList(wHOStrings.get(i).split("\\s*,\\s*"));
+
+                        if (recordString.size()!=hNodes){
+                            System.err.println("recordString.size()!= количеству СКРЫТЫХ НЕЙРОНОВ, начинается обучение");
+                            return false;
+                        }
+
+
+                        for (int j=0; j<recordString.size(); j++){
+                            wHOTransposed[i][j] = Double.parseDouble(recordString.get(j));
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return false;
+            }
+            }
+            else {
+                System.err.println("ПАМЯТЬ НЕ НАЙДЕНА, НАЧИНАЕТСЯ ОБУЧЕНИЕ");
+                return false;
+            }
+        System.err.println("ПАМЯТЬ ЗАГРУЖЕНА");
+            return true;
+    }
+
+
+
 }
 
 

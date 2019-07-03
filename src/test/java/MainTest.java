@@ -1,8 +1,11 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -128,18 +131,59 @@ public class MainTest {
                 .collect(Collectors.joining(","));
 
 
-        try(FileWriter writer = new FileWriter("test.txt", true))
-        {
-            writer.append(resultPlus);
-            writer.write("\n");
-            writer.flush();
-        }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }
-
-
         list.add(resultPlus);
+    }
+
+
+
+    @Test
+    public void arrayElementsToStringList() throws IOException {
+        double value = 0.4587516989212365478851236812121223213;
+        System.out.println(value);
+        System.out.println();
+
+
+        String stroka = "-8.230478518947536E-4";
+        double exp = Double.parseDouble(stroka);
+        System.err.println("!!!!!!!!!!!!!!");
+        System.out.println(exp);
+        System.out.println(exp*100000);
+
+
+
+        double[][] array = new double[4][4];
+        for (int i =0; i<4; i++){
+            for (int j =0; j<4; j++){
+                value+=7.425;
+                array[i][j]=value;
+            }
+        }
+
+//        File wIHFile = new File("deleteMe.csv");
+//        if (wIHFile.exists() && wIHFile.isFile())
+//        {
+//            wIHFile.delete();
+//        }
+
+
+//        BufferedWriter writer = new BufferedWriter(new FileWriter(new File("deleteMe.csv"), true));
+//
+//        for (int i =0; i<4; i++){
+//            for (int j =0; j<4; j++){
+//                if (j!=3)
+//                writer.write(array[i][j]+ ",");
+//                else writer.write(String.valueOf(array[i][j]));
+//            }
+//            writer.write("\r");
+//        }
+//        writer.flush();
+
+    }
+
+    public static byte[] toByteArray(double value) {
+        byte[] bytes = new byte[8];
+        ByteBuffer.wrap(bytes).putDouble(value);
+        return bytes;
     }
 
 

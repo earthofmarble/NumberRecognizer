@@ -2,16 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="84c6c7fb-c869-463b-98f8-3086eefce3b1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Position.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/MainTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/NeuralNetwork.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/NeuralNetwork.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/MainTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/NeuralNetwork.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/NeuralNetwork.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/numberRecognizer-1.1-Java.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/numberRecognizer-1.1-Java.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/MainTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/MainTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-MainTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-MainTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/MainTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/MainTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/test.txt" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -35,20 +37,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/MainTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+            <state relative-caret-position="484">
+              <caret line="40" column="72" selection-start-line="40" selection-start-column="72" selection-end-line="40" selection-end-column="72" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -57,15 +47,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test.txt">
-          <provider selected="true" editor-type-id="text-editor" />
+        <entry file="file://$PROJECT_DIR$/src/test/java/MainTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="384">
+              <caret line="171" column="35" lean-forward="true" selection-start-line="171" selection-start-column="35" selection-end-line="171" selection-end-column="35" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/NeuralNetwork.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2465">
-              <caret line="351" column="5" selection-start-line="351" selection-start-column="5" selection-end-line="351" selection-end-column="5" />
+            <state relative-caret-position="1969">
+              <caret line="407" column="27" selection-start-line="407" selection-start-column="27" selection-end-line="407" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -127,11 +124,12 @@
         <option value="$PROJECT_DIR$/src/main/java/neuralNetwork.java" />
         <option value="$PROJECT_DIR$/src/main/java/QueryMain.java" />
         <option value="$PROJECT_DIR$/src/main/java/Position.java" />
-        <option value="$PROJECT_DIR$/src/main/java/NeuralNetwork.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/src/test/java/MainTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
         <option value="$PROJECT_DIR$/test.txt" />
+        <option value="$PROJECT_DIR$/deleteMe.txt" />
+        <option value="$PROJECT_DIR$/src/main/java/NeuralNetwork.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Main.java" />
+        <option value="$PROJECT_DIR$/src/test/java/MainTest.java" />
       </list>
     </option>
   </component>
@@ -179,6 +177,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -214,14 +214,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562035465628" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1562132141453" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.Arquillian JUnit4" value="" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
@@ -253,7 +251,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.MainTest.rotateAndAddData">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
       <module name="numberRecognizer" />
@@ -261,11 +259,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.arrayElementsToStringList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="numberRecognizer" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="MainTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="METHOD_NAME" value="arrayElementsToStringList" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -302,11 +301,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.MainTest.arrayElementsToStringList" />
         <item itemvalue="JUnit.MainTest.rotateAndAddData" />
         <item itemvalue="JUnit.MainTest.arrayToString" />
         <item itemvalue="JUnit.MainTest.rotateData" />
-        <item itemvalue="JUnit.MainTest" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -331,50 +330,51 @@
       <workItem from="1561936429938" duration="882000" />
       <workItem from="1561950303491" duration="2532000" />
       <workItem from="1562009757713" duration="1361000" />
-      <workItem from="1562018710744" duration="13261000" />
+      <workItem from="1562018710744" duration="13788000" />
+      <workItem from="1562116815930" duration="13639000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="MainTest_rotateData - 2019.07.02 at 02h 50m 04s.xml">
-      <configuration name="MainTest.rotateData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 06h 43m 52s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_rotateData - 2019.07.02 at 04h 04m 37s.xml">
-      <configuration name="MainTest.rotateData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 06h 44m 41s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_rotateData - 2019.07.02 at 04h 06m 04s.xml">
-      <configuration name="MainTest.rotateData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 06h 44m 58s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_arrayToString - 2019.07.02 at 04h 21m 39s.xml">
-      <configuration name="MainTest.arrayToString" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 06h 58m 26s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_rotateAndAddData - 2019.07.02 at 05h 11m 07s.xml">
-      <configuration name="MainTest.rotateAndAddData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 06h 58m 36s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_rotateAndAddData - 2019.07.02 at 05h 13m 31s.xml">
-      <configuration name="MainTest.rotateAndAddData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 06h 58m 52s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_rotateAndAddData - 2019.07.02 at 05h 14m 52s.xml">
-      <configuration name="MainTest.rotateAndAddData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 07h 06m 37s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_rotateAndAddData - 2019.07.02 at 05h 28m 38s.xml">
-      <configuration name="MainTest.rotateAndAddData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 07h 10m 09s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_rotateAndAddData - 2019.07.02 at 05h 32m 44s.xml">
-      <configuration name="MainTest.rotateAndAddData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 07h 41m 15s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="MainTest_rotateAndAddData - 2019.07.02 at 05h 35m 05s.xml">
-      <configuration name="MainTest.rotateAndAddData" configurationId="JUnit" />
+    <history-entry file="MainTest_arrayElementsToStringList - 2019.07.03 at 07h 51m 00s.xml">
+      <configuration name="MainTest.arrayElementsToStringList" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="117913000" />
+    <option name="totallyTimeSpent" value="132079000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17590618" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17750533" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -384,7 +384,7 @@
       <window_info id="Learn" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3290461" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34190783" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.30546623" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -470,12 +470,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="709">
-          <caret line="47" column="39" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
-        </state>
-      </provider>
+    <entry file="file://E:/Download/pictures/lem/k/results/deepnude1.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Position.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -490,23 +486,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://E:/Download/pictures/lem/k/results/deepnude1.png">
-      <provider selected="true" editor-type-id="images" />
+    <entry file="file://$PROJECT_DIR$/test.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/NeuralNetwork.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2465">
-          <caret line="351" column="5" selection-start-line="351" selection-start-column="5" selection-end-line="351" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="709">
+          <caret line="47" column="39" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/MainTest.java">
+    <entry file="file://$PROJECT_DIR$/deleteMe.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="15" column="9" selection-start-line="15" selection-start-column="9" selection-end-line="15" selection-end-column="9" />
+        <state relative-caret-position="88">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deleteMe.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wHOTransposedMemory.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/wIHTransposedMemory.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/NeuralNetwork.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1969">
+          <caret line="407" column="27" selection-start-line="407" selection-start-column="27" selection-end-line="407" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -515,16 +524,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="27" column="53" selection-start-line="27" selection-start-column="53" selection-end-line="27" selection-end-column="53" />
+        <state relative-caret-position="484">
+          <caret line="40" column="72" selection-start-line="40" selection-start-column="72" selection-end-line="40" selection-end-column="72" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.txt">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/src/test/java/MainTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="171" column="35" lean-forward="true" selection-start-line="171" selection-start-column="35" selection-end-line="171" selection-end-column="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">
