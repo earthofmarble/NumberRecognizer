@@ -69,8 +69,10 @@ public class Main {
         } catch (IOException e) {
             System.err.println("Файл с данными для тестов не существует! ");
             System.out.println(e);
-            System.err.println("Проверьте путь!");
+            System.err.println("Проверьте путь! или распакуйте архив MNIST.zip если еще не сделали этого");
+            return;
         }
+
         System.out.println("тестирование...");
         getScorecard(network);
         System.out.println("тестирование окончено");
