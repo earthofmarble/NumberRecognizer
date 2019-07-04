@@ -1,6 +1,9 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -184,6 +187,39 @@ public class MainTest {
         byte[] bytes = new byte[8];
         ByteBuffer.wrap(bytes).putDouble(value);
         return bytes;
+    }
+
+@Test
+public void init() {
+    String inputImagePath = "./TESTimage/test.jpg";
+    File inputFile = new File(inputImagePath);
+    BufferedImage inputImage = null;
+    try {
+        inputImage = ImageIO.read(inputFile);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+       System.out.println( inputImage.getWidth());
+       inputImage = resizeInputImageE(inputImage);
+       System.out.println(inputImage.getWidth());
+
+//    try {
+//        ImageIO.write(resizeInputImageE(inputImage), "jpg", new File("./resized.jpg"));
+//    } catch (IOException e) {
+//        e.printStackTrace();
+//    }
+}
+
+    private static BufferedImage resizeInputImageE(BufferedImage inputImage){
+        BufferedImage outputImage = new BufferedImage(28,
+                28, inputImage.getType());
+
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(inputImage, 0, 0, 28, 28, null);
+        g2d.dispose();
+
+        return outputImage;
     }
 
 

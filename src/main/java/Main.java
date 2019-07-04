@@ -1,7 +1,9 @@
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -79,12 +81,12 @@ public class Main {
 /*** */
 
 
-        System.out.println("рукописи 28*28 пикселей");
+        System.out.println("рукописи 28*28 пикселей ТЕПЕРЬ МОЖНО ЛЮБОГО РАЗМЕРА");
         System.out.println();
         //бесконечный цикл для ввода своих изображений
         while (true) {
             try {
-                System.err.println("Укажите путь к изображению (28x28 pix): ");
+                System.err.println("Укажите путь к изображению (28x28 pix ТЕПЕРЬ МОЖНО ЛЮБОГО РАЗМЕРА): ");
                 Scanner scanner = new Scanner(System.in);
                 String path = scanner.nextLine();
                 if (path.equals("backquery") || path.equals("back query") || path.equals("backQuery") || path.equals("Backquery") || path.equals("Back Query")){
@@ -144,8 +146,10 @@ public class Main {
                 int imHeight = image.getHeight();
 
                 if (imWidth != 28 && imHeight != 28) {
-                    System.err.println("РАЗМЕР ИЗОБРАЖЕНИЯ ДОЛЖЕН БЫТЬ 28x28");
-                    return null;
+                    System.err.println("Размер изображения должен быть 28*28, размер изображения был изменен");
+                    image = resizeInputImage(image);
+                    imWidth = image.getWidth();
+                    imHeight = image.getHeight();
                 }
                 double[] pixelsArray = new double[imWidth * imHeight];
                 for (int y = 0, z = 0; y < imHeight; y++)
@@ -339,6 +343,18 @@ public class Main {
                 .collect(Collectors.joining(","));
 
         list.add(resultPlus);
+    }
+
+
+    private static BufferedImage resizeInputImage(BufferedImage inputImage){
+        BufferedImage outputImage = new BufferedImage(28,
+                28, inputImage.getType());
+
+        Graphics2D g2d = outputImage.createGraphics();
+        g2d.drawImage(inputImage, 0, 0, 28, 28, null);
+        g2d.dispose();
+
+        return outputImage;
     }
 
 }
