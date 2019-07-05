@@ -3,11 +3,10 @@ import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.awt.image.RescaleOp;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -201,8 +200,13 @@ public void init() {
     }
 
        System.out.println( inputImage.getWidth());
-       inputImage = resizeInputImageE(inputImage);
+       inputImage = resizeInputImageE(inputImage, 28,28, true);
        System.out.println(inputImage.getWidth());
+
+
+        cutCut(inputImage, 1,7,16,9);
+
+
 
 //    try {
 //        ImageIO.write(resizeInputImageE(inputImage), "jpg", new File("./resized.jpg"));
@@ -211,16 +215,131 @@ public void init() {
 //    }
 }
 
-    private static BufferedImage resizeInputImageE(BufferedImage inputImage){
-        BufferedImage outputImage = new BufferedImage(28,
-                28, inputImage.getType());
+    private static BufferedImage resizeInputImageE(BufferedImage inputImage, int width, int height, boolean shouldGreyscale){
+        BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
 
         Graphics2D g2d = outputImage.createGraphics();
-        g2d.drawImage(inputImage, 0, 0, 28, 28, null);
+        g2d.drawImage(inputImage, 0, 0, width, height, null);
         g2d.dispose();
+
+        if (shouldGreyscale) {
+            RescaleOp rescaleOp = new RescaleOp(1.3f, -10, null);
+            rescaleOp.filter(outputImage, outputImage);
+        }
 
         return outputImage;
     }
 
+
+
+//    @Test
+//    public void fitImage(){
+//        String inputImagePath = "./resized.jpg";
+//        File inputFile = new File(inputImagePath);
+//        BufferedImage inputImage = null;
+//        try {
+//            inputImage = ImageIO.read(inputFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        double[] inputArray = Main.getImagePixelsArray("./resized.jpg");
+//        double[][] dataReshaped = new double[28][28];
+//        for (int i=0, c=0; i<28; i++){
+//            for (int j=0; j<28; j++, c++){
+//                dataReshaped[i][j] = inputArray[c];
+//            }
+//        }
+//        int top=0, left=0, right=0, bottom=0;
+//
+//        boolean pixFound = false;
+//        for (int i=0; i<28; i++){
+//            for (int j=0; j<28; j++){
+//             if (dataReshaped[i][j]<72 && !pixFound){
+//                 top=i;bottom=i;left=j;right=j;
+//                 pixFound=true;
+//             }
+//
+//             if (pixFound){
+//                 if (dataReshaped[i][j]<72 && i<top){
+//                     top = i;
+//                 }
+//                 if (dataReshaped[i][j]<72 && i>bottom){
+//                     bottom = i;
+//                 }
+//                 if (dataReshaped[i][j]<72 && j<left){
+//                     left = j;
+//                 }
+//                 if (dataReshaped[i][j]<72 && j>right){
+//                     right = j;
+//                 }
+//             }
+//            }
+//        }
+//
+//        //TODO СДЕЛАТЬ ПРОВЕРКУ НА ПУСТОТУ ИЗОБРАЖЕННИЯ (если высота меньше, скажем, 4 пикселей и ширина < 1; или если вообще пикслеей не нешло (pix found false)
+//
+//        System.out.println(" top: " + top + " left: " + left + " bottom: " + bottom + " right: " + right);
+//
+//        int width = right - left;
+//        int height = bottom - top;
+//
+//        if (width>12){
+////            for (int i=top, h=0; i<bottom; i++, h++){
+////                for (int j=left, w=0; j<right; j++, w++){
+//                 cutCut(inputImage, top, left, bottom, right);
+////                }
+////            }
+//        } else if (width+4>12){
+//            double[][] imgPart = new double[height][width+4];
+////            for (int i=top, h=0; i<bottom; i++, h++){
+////                for (int j=left-2, w=0; j<right+2; j++, w++){
+//                    cutCut(inputImage, top, left-2, bottom, right+2);
+////                }
+////            }
+//        } else if (width + 8>12){
+//        //    double[][] imgPart = new double[height][width+8];
+////            for (int i=top, h=0; i<bottom; i++, h++){
+////                for (int j=left-4, w=0; j<right+4; j++, w++){
+//            cutCut(inputImage, top, left-4, bottom, right+4);
+////                }
+////            }
+//        } else {
+//            int addMe = (20-width)/2;
+////            double[][] imgPart = new double[height][width+addMe*2];
+////            for (int i=top, h=0; i<bottom; i++, h++){
+////                for (int j=left-addMe, w=0; j<right+addMe; j++, w++){
+//            cutCut(inputImage, top, left-addMe, bottom, right+addMe);
+////                }
+////            }
+//        }
+//    }
+//
+
+     static void cutCut(BufferedImage inputImage, int top, int left, int bottom, int right){
+         BufferedImage dst = new BufferedImage(right-left+1, bottom-top+1, BufferedImage.TYPE_BYTE_GRAY);
+
+         Graphics2D g = dst.createGraphics();
+         g.drawImage(inputImage, -left, -top, 28, 28, null);
+         g.dispose();
+
+         BufferedImage outputImage =  resizeInputImageE(dst,20,20, false);
+         BufferedImage newResized = new BufferedImage(28, 28, BufferedImage.TYPE_BYTE_GRAY);
+
+         Graphics graphics = newResized.getGraphics();
+         graphics.setColor(Color.WHITE);
+         graphics.fillRect(0, 0, 28, 28);
+         graphics.setColor(Color.BLACK);
+         graphics.drawImage(outputImage, 4, 4, null);
+         graphics.dispose();
+
+//         try {
+//             ImageIO.write(newResized, "jpg", new File("./resized2.jpg"));
+//         } catch (IOException e) {
+//             e.printStackTrace();
+//         }
+
+
+
+    }
 
 }

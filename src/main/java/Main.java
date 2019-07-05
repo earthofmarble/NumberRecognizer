@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -132,33 +133,51 @@ public class Main {
 
         }
     }
-    //конвертируем изображение в массив
+    //конвертируем изображение в массив TODO сделать private
     private static double[] getImagePixelsArray(String imagePath)  {
         BufferedImage image = null;
         try {
             image = ImageIO.read(new File(imagePath));
         } catch (IOException e) {
             System.err.println("Укажите корректный путь к файлу!");
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
             if (image!=null) {
-                int imWidth = image.getWidth();
-                int imHeight = image.getHeight();
+                int imWidth;
+                int imHeight;
 
-                if (imWidth != 28 && imHeight != 28) {
-                    System.err.println("Размер изображения должен быть 28*28, размер изображения был изменен");
-                    image = resizeInputImage(image);
+             //   if (imWidth != 28 && imHeight != 28) {
+                //    System.err.println("Размер изображения должен быть 28*28, размер изображения был изменен");
+
+                    image = resizeInputImage(image, 28,28, true);
+                    image = fitImage(image);
+                    if (image==null){
+                        System.out.println("НА ИЗОБРАЖЕНИИ НЕ НАЙДЕНА ЦИФРА");
+                        return null;
+                    }
+
+                    try {
+                        ImageIO.write(image, "png", new File("./картинка после обработки.png"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     imWidth = image.getWidth();
                     imHeight = image.getHeight();
-                }
+             //   }
                 double[] pixelsArray = new double[imWidth * imHeight];
                 for (int y = 0, z = 0; y < imHeight; y++)
-                    for (int x = 0; x < imWidth; x++, z++)
+                    for (int x = 0; x < imWidth; x++, z++) {
                         pixelsArray[z] = image.getRaster().getSampleDouble(x, y, 0);
+                    }
+                    //TODO
 
+//                for (double item: pixelsArray ) {
+//                    System.out.println(item +" ");
+//                }
                 return pixelsArray;
             } else return null;
     }
+
         //обработка собственного изображения и вычисление значения
     private static void getOwnAnswer(NeuralNetwork network, String path) throws IOException {
         double[] imagePixelsTemp = getImagePixelsArray(path);
@@ -269,7 +288,7 @@ public class Main {
 
                 Position tempPosition;
 
-                for (int i=0; i<dataReshaped.length; i++){              //TODO сделать нормально, типа сразу проверку и изменение позиций, подумать над этим
+                for (int i=0; i<dataReshaped.length; i++){              //TODO сделать нормально, типа сразу проверку и изменение позиций, подумать над этим. ой, да ладно, и так сойдет
                     for (int j=0; j<dataReshaped[i].length; j++){
 
                         tempPosition = rotatePixel(new Position(i, j), true);
@@ -294,7 +313,7 @@ public class Main {
                 arrayElementsToStringList(dataFlippedMinus, toAddMinus, allTrainingValues.get(0));
             }
 
-                //TODO еще раз проверить, все ли правильно добавляет
+                //TODO еще раз проверить, все ли правильно добавляет :) вроде работает:)
         trainingDataList.addAll(toAddPlus);
         trainingDataList.addAll(toAddMinus);
 
@@ -345,16 +364,119 @@ public class Main {
         list.add(resultPlus);
     }
 
-
-    private static BufferedImage resizeInputImage(BufferedImage inputImage){
-        BufferedImage outputImage = new BufferedImage(28,
-                28, inputImage.getType());
+            //изменяем размер изображения
+    private static BufferedImage resizeInputImage(BufferedImage inputImage, int width, int height, boolean shouldGreyscale){
+        BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
 
         Graphics2D g2d = outputImage.createGraphics();
-        g2d.drawImage(inputImage, 0, 0, 28, 28, null);
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0, 0, 28, 28);
+        g2d.drawImage(inputImage, 0, 0, width, height, null);
         g2d.dispose();
+            //настраиваем яркость и контрастность
+        if (shouldGreyscale) {
+            RescaleOp rescaleOp = new RescaleOp(1.3f, -10, null);
+            rescaleOp.filter(outputImage, outputImage);
+        }
 
         return outputImage;
     }
+
+        //выделяем на картинке цифру, создаем новую картинку 20*20пикселей и расширяем новую картинку до 28*28, помещая 20*20 в центр
+    private static BufferedImage fitImage(BufferedImage inputImage){
+        int imWidth = inputImage.getWidth();
+        int imHeight = inputImage.getHeight();
+        double[] inputArray = new double[imWidth * imHeight];
+        for (int y = 0, z = 0; y < imHeight; y++) {
+            for (int x = 0; x < imWidth; x++, z++) {
+                inputArray[z] = inputImage.getRaster().getSampleDouble(x, y, 0);            //получаем пиксели
+            }
+        }
+        double[][] dataReshaped = new double[28][28];
+        for (int i=0, c=0; i<28; i++){
+            for (int j=0; j<28; j++, c++){
+                dataReshaped[i][j] = inputArray[c];     //конвертируем в двумерный массив
+            }
+        }
+        int top=0, left=0, right=0, bottom=0;   //крайние тёмные точки изображения
+
+        boolean pixFound = false;   //найден ли первый темный пиксель
+        for (int i=0; i<28; i++){
+            for (int j=0; j<28; j++){
+                if (dataReshaped[i][j]<72 && !pixFound){
+
+                    top=i;bottom=i;left=j;right=j;
+                    pixFound=true;
+                }
+
+                if (pixFound){
+                    if (dataReshaped[i][j]<72 && i<top){
+                        top = i;
+                    }
+                    if (dataReshaped[i][j]<72 && i>bottom){
+                        bottom = i;
+                    }
+                    if (dataReshaped[i][j]<72 && j<left){
+                        left = j;
+                    }
+                    if (dataReshaped[i][j]<72 && j>right){
+                        right = j;
+                    }
+
+                }
+            }
+        }
+
+        //TODO СДЕЛАТЬ ПРОВЕРКУ НА ПУСТОТУ ИЗОБРАЖЕННИЯ (если высота меньше, скажем, 4 пикселей и ширина < 1; или если вообще пикслеей не нешло (pix found false)
+
+        int width = right - left;
+        int height = bottom - top;
+
+        if (width<1 || height<4){  //если цифра не найдена
+            return null;
+        }
+
+        BufferedImage outImage;
+        //тут мы решаем, сколько пустых пикселей захватить вместе с картинкой.
+        //ведь в ширину цифра может быть 1 пиксель(1 например), а по вертикали - на всю высоту. так что нужно было об этом позаботиться, чтобы единица не превратилась в черный квадрат. да и вообще, чтобы не сильно растягивало (читать ломало) узкие цифры
+        //с высотой я такое же не делал (не смог вспомнить ни одной цифры, состоящей из одного пикселя в высоту)
+        if (width>12){
+            outImage = cutCut(inputImage, top, left, bottom, right);
+        } else if (width+4>12){
+            outImage = cutCut(inputImage, top, left-2, bottom, right+2);
+        } else if (width + 8>12){
+            outImage = cutCut(inputImage, top, left-4, bottom, right+4);
+        } else {
+            int addMe = (20-width)/2;
+            outImage = cutCut(inputImage, top, left-addMe, bottom, right+addMe);
+        }
+        return outImage;
+    }
+
+                //названия остались с испытаний,пускай будут. тут происходит следующее:
+   private static BufferedImage cutCut(BufferedImage inputImage, int top, int left, int bottom, int right){
+            // 1. создаем картинку по размеру цифры, которую будем вырезать
+        final BufferedImage dst = new BufferedImage(right-left+1, bottom-top+1, BufferedImage.TYPE_BYTE_GRAY);
+        // 2. закрашиваем белым(чтобы не появлялись черные рамки) и наклеиваем туда нашу цифру, тут как-то дебильно дроуимейдж позицию получает, я тыкал тыкал и вроде ровно встало, но это нужно разобраться //TODO
+        Graphics2D g = dst.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, 28, 28);
+        g.drawImage(inputImage, -left, -top, 28, 28, null);
+        g.dispose();
+        // 3. ресайзим картинку в 20*20
+        BufferedImage outputImage =  resizeInputImage(dst,20,20, false);
+        //4. создаем новую картинку 28*28
+        BufferedImage newResized = new BufferedImage(28, 28, BufferedImage.TYPE_BYTE_GRAY);
+        //5. закрашиваем, наклеиваем
+        Graphics graphics = newResized.getGraphics();
+        graphics.setColor(Color.WHITE);
+        graphics.fillRect(0, 0, 28, 28);
+        graphics.drawImage(outputImage, 4, 4, null);
+        graphics.dispose();
+        //отправляем получателю
+        return newResized;
+
+    }
+
 
 }
